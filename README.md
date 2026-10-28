@@ -36,6 +36,11 @@ Shine Joias/
 │
 ├── index.html                   # Estrutura completa, estilos e lógica da aplicação
 ├── Intro shine joias.mp4         # Vídeo cinematográfico da introdução
+├── favicon.svg                  # Favicon vetorial oficial da marca
+├── favicon.ico                  # Favicon multi-resolução para navegadores legado
+├── favicon-32x32.png            # Favicon 32x32 em alta definição
+├── favicon-16x16.png            # Favicon 16x16 para abas de navegadores
+├── apple-touch-icon.png         # Ícone de toque para iOS / Safari (180x180)
 ├── README.md                    # Documentação do projeto
 ├── .gitignore                   # Arquivos ignorados pelo Git
 │
