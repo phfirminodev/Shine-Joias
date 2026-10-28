@@ -136,24 +136,32 @@ nav.main a:hover,nav.main button:hover{color:var(--white)}
 
 /* Hero */
 .hero{position:relative;overflow:hidden;background:radial-gradient(120% 90% at 78% 40%,#24242a 0%,var(--ink) 62%)}
-.slides{display:grid}
-.slide{grid-area:1/1;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;min-height:min(86vh,760px);opacity:0;visibility:hidden;transition:opacity .7s var(--ease),visibility .7s}
+.slides{display:grid;width:100%}
+.slide{grid-area:1/1;display:flex;align-items:center;min-height:min(86vh,760px);opacity:0;visibility:hidden;transition:opacity .7s var(--ease),visibility .7s;position:relative}
 .slide.on{opacity:1;visibility:visible}
+.slide-inner{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;width:100%;position:relative;z-index:2}
+.slide-full .slide-inner{grid-template-columns:1fr;max-width:var(--max)}
 .slide .copy{padding:60px 0}
+.slide-full .copy{max-width:600px;text-shadow:0 2px 22px rgba(0,0,0,.9)}
 .slide h1,.slide h2{font-size:clamp(40px,6.2vw,92px);margin-bottom:22px}
 .slide p{max-width:46ch;color:#cfcfd5;font-size:clamp(16px,1.5vw,19px);margin-bottom:34px}
 .slide .cta{display:flex;flex-wrap:wrap;gap:12px}
+
+/* Slide Full Background */
+.slide-bg{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;z-index:1;pointer-events:none}
+.slide-bg-img{width:100%;height:100%;object-fit:cover;object-position:75% 58%;transform:scale(1.02);transition:transform 8s ease-out}
+.slide.on .slide-bg-img{transform:scale(1.06)}
+.slide-bg-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,11,.65) 0%,transparent 20%,transparent 75%,rgba(10,10,11,.88) 100%),linear-gradient(90deg,rgba(10,10,11,.96) 0%,rgba(10,10,11,.86) 34%,rgba(10,10,11,.32) 68%,rgba(10,10,11,.55) 100%)}
+
 .art{display:grid;place-items:center;height:100%;min-height:340px;position:relative}
-.art svg,.art img{width:min(100%,520px);height:auto;max-height:70vh}
-.art img{border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.1);transition:transform .5s var(--ease)}
-.slide:hover .art img{transform:scale(1.02)}
+.art svg{width:min(100%,520px);height:auto;max-height:70vh}
 .hero-mark{width:auto!important;height:min(66vh,560px)!important;max-height:none!important;clip-path:inset(0 0 100% 0)}
 .slide.on .hero-mark{animation:reveal 1.7s var(--ease) .2s forwards}
 @keyframes reveal{to{clip-path:inset(0 0 0 0)}}
 .shine-sweep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);background-size:250% 100%;background-position:150% 0;mix-blend-mode:overlay}
 .slide.on .shine-sweep{animation:sweep 1.8s ease 2s forwards}
 @keyframes sweep{to{background-position:-50% 0}}
-.hero-ctrl{position:absolute;left:0;right:0;bottom:26px}
+.hero-ctrl{position:absolute;left:0;right:0;bottom:26px;z-index:10}
 .hero-ctrl .wrap{display:flex;align-items:center;justify-content:space-between}
 .dots{display:flex;gap:10px}
 .dots button{width:34px;height:20px;position:relative}
@@ -164,15 +172,19 @@ nav.main a:hover,nav.main button:hover{color:var(--white)}
 .arrows button:hover{background:var(--white);color:var(--ink)}
 .arrows svg{width:18px;height:18px}
 @media(max-width:860px){
-  .slide{grid-template-columns:1fr;min-height:0;padding-bottom:84px}
+  .slide{min-height:0;padding-bottom:84px}
+  .slide-inner{grid-template-columns:1fr}
   .slide .copy{padding:40px 0 4px;order:2}
   .art{order:1;min-height:0;height:300px;padding-top:30px}
-  .art svg,.art img{max-height:260px}
+  .art svg{max-height:260px}
   .hero-mark{height:250px!important}
+  .slide-bg-img{object-position:70% 35%}
+  .slide-bg-gradient{background:linear-gradient(180deg,rgba(10,10,11,.88) 0%,rgba(10,10,11,.55) 45%,rgba(10,10,11,.92) 85%)}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
   .hero-mark{clip-path:none}
+  .slide-bg-img{transform:none!important}
 }
 
 /* Section scaffolding */
@@ -456,10 +468,10 @@ footer.site{background:var(--ink);padding-top:70px;border-top:1px solid rgba(255
 
 <!-- HERO -->
 <section class="hero" aria-roledescription="carrossel" aria-label="Destaques">
-  <div class="wrap">
-    <div class="slides" id="slides">
+  <div class="slides" id="slides">
 
-      <article class="slide on" aria-label="1 de 3">
+    <article class="slide on" aria-label="1 de 3">
+      <div class="wrap slide-inner">
         <div class="copy">
           <h1 class="display">Não é qualquer prata, <span class="metal">é Shine.</span></h1>
           <p>Joias em prata 925 original, com garantia vitalícia e envio para todo o Brasil. Peças para usar todo dia e para marcar o que importa.</p>
@@ -475,9 +487,15 @@ footer.site{background:var(--ink);padding-top:70px;border-top:1px solid rgba(255
           </svg>
           <div class="shine-sweep"></div>
         </div>
-      </article>
+      </div>
+    </article>
 
-      <article class="slide" aria-label="2 de 3">
+    <article class="slide slide-full" aria-label="2 de 3">
+      <div class="slide-bg" aria-hidden="true">
+        <img src="img/hero/aliancas-hero.jpg" alt="Alianças feitas para durar o tempo todo" class="slide-bg-img" loading="eager">
+        <div class="slide-bg-gradient"></div>
+      </div>
+      <div class="wrap slide-inner">
         <div class="copy">
           <h2 class="display">Alianças feitas para durar o tempo todo.</h2>
           <p>Compromisso, namoro ou noivado. Escolha o modelo, confirme o tamanho com a nossa equipe e receba em casa com garantia vitalícia.</p>
@@ -486,12 +504,15 @@ footer.site{background:var(--ink);padding-top:70px;border-top:1px solid rgba(255
             <a class="btn btn-ghost" href="#tamanho">Descobrir meu tamanho</a>
           </div>
         </div>
-        <div class="art" aria-hidden="true">
-          <img src="img/hero/aliancas-hero.jpg" alt="Alianças feitas para durar o tempo todo" class="hero-art-img" loading="eager">
-        </div>
-      </article>
+      </div>
+    </article>
 
-      <article class="slide" aria-label="3 de 3">
+    <article class="slide slide-full" aria-label="3 de 3">
+      <div class="slide-bg" aria-hidden="true">
+        <img src="img/hero/masculino-hero.jpg" alt="Linha masculina em prata 925" class="slide-bg-img" loading="lazy">
+        <div class="slide-bg-gradient"></div>
+      </div>
+      <div class="wrap slide-inner">
         <div class="copy">
           <h2 class="display">Linha masculina em prata 925.</h2>
           <p>Correntes, crucifixos e pulseiras com acabamento firme e peso de verdade. Para quem não abre mão de estilo.</p>
@@ -500,12 +521,9 @@ footer.site{background:var(--ink);padding-top:70px;border-top:1px solid rgba(255
             <a class="btn btn-ghost" href="#cuidados">Cuidados com a prata</a>
           </div>
         </div>
-        <div class="art" aria-hidden="true">
-          <img src="img/hero/masculino-hero.jpg" alt="Linha masculina em prata 925" class="hero-art-img" loading="lazy">
-        </div>
-      </article>
+      </div>
+    </article>
 
-    </div>
   </div>
   <div class="hero-ctrl">
     <div class="wrap">
